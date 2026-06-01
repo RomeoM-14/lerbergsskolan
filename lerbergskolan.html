@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lerbergskolan – Resan till Auschwitz</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght=0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0d0d0d;
+    --dark: #1a1a1a;
+    --mid: #2e2e2e;
+    --warm: #8b7355;
+    --gold: #c9a96e;
+    --cream: #f5f0e8;
+    --light: #e8e0d0;
+    --white: #faf8f4;
+    --red: #8b2020;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'Montserrat', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── STARTSIDA ── */
+  #startpage {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .start-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, #0d0d0d 0%, #1c1510 50%, #0d0d0d 100%);
+  }
+
+  .start-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 40%, rgba(139,115,85,0.12) 0%, transparent 70%);
+  }
+
+  .class-photo-wrapper {
+    position: relative;
+    width: min(700px, 88vw);
+    aspect-ratio: 16/9;
+    border: 1px solid rgba(201,169,110,0.3);
+    overflow: hidden;
+    margin-bottom: 2.4rem;
+    z-index: 2;
+    background: var(--dark);
+  }
+
+  .class-photo-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.92;
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+  }
+
+  .photo-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    z-index: 1;
+    background: var(--dark);
+    padding: 20px;
+  }
+  
+  .photo-placeholder .icon { font-size: 2rem; opacity: 0.4; }
+  .photo-placeholder p {
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--warm);
+    text-align: center;
+  }
+
+  .gold-line {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto 1.4rem;
+    z-index: 2;
+    position: relative;
+  }
+
+  .start-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.6rem);
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    text-align: center;
+    color: var(--cream);
+    z-index: 2;
+    position: relative;
+    line-height: 1.15;
+  }
+
+  .start-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(0.65rem, 1.5vw, 0.78rem);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 0.8rem;
+    z-index: 2;
+    position: relative;
+    text-align: center;
+  }
+
+  .start-cta {
+    margin-top: 2.8rem;
+    z-index: 2;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: none;
+    border: 1px solid rgba(201,169,110,0.5);
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 0.9rem 2.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .start-cta:hover {
+    background: rgba(201,169,110,0.1);
+    border-color: var(--gold);
+    color: var(--cream);
+  }
+  .start-cta svg { width: 14px; height: 14px; }
+
+  /* ── GALLERIET ── */
+  #gallery {
+    display: none;
+    min-height: 100vh;
+    background: var(--black);
+  }
+
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    height: 56px;
+    background: rgba(13,13,13,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(201,169,110,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+  }
+
+  .topbar-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--cream);
+  }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .slide-counter {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--warm);
+  }
+
+  .btn-home {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: 1px solid rgba(201,169,110,0.35);
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.45rem 1rem;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .btn-home:hover {
+    background: rgba(201,169,110,0.1);
+    border-color: var(--gold);
+  }
+  .btn-home svg { width: 12px; height: 12px; }
+
+  .slide-area {
+    padding-top: 56px;
+    min-height: 100vh;
+    display: flex;
+    align-items: stretch;
+  }
+
+  .slide {
+    display: none;
+    width: 100%;
+    min-height: calc(100vh - 56px);
+    animation: fadeSlide 0.5s ease forwards;
+  }
+  .slide.active { display: flex; }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateX(18px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .slide-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .slide-inner { grid-template-columns: 1fr; }
+  }
+
+  /* Sista sidan layout */
+  .slide.full-text-slide .slide-inner {
+    grid-template-columns: 1fr;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .slide.full-text-slide .slide-text-col {
+    border-left: none;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    background: transparent;
+  }
+  .slide.full-text-slide .slide-text-col::before { display: none; }
+  .slide.full-text-slide .slide-body { max-width: 650px; }
+
+  /* Bildsida */
+  .slide-image-col {
+    position: relative;
+    min-height: 55vh;
+    overflow: hidden;
+    background: var(--dark);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .image-container-box {
+    position: relative;
+    flex: 1;
+    min-height: 180px;
+    border: 1px solid rgba(201,169,110,0.1);
+    overflow: hidden;
+    background: var(--dark);
+  }
+
+  .image-container-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.88;
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+  }
+
+  .slide-num-badge {
+    position: absolute;
+    bottom: 1.2rem;
+    left: 1.2rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    opacity: 0.6;
+    z-index: 5;
+  }
+
+  /* Textsida – Större text inställd här */
+  .slide-text-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(2rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4.5rem);
+    background: var(--dark);
+    border-left: 1px solid rgba(201,169,110,0.08);
+    position: relative;
+  }
+
+  .slide-text-col::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 20%; bottom: 20%;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    opacity: 0.25;
+  }
+
+  .slide-body {
+    font-size: 1.05rem; /* Gjort texten större (tidigare 0.88rem) */
+    line-height: 1.9;
+    color: rgba(245,240,232,0.85); /* Lite starkare kontrast för bättre läsbarhet */
+    font-weight: 300;
+    max-width: 520px;
+  }
+
+  /* Navigering */
+  .nav-bar {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(13,13,13,0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(201,169,110,0.2);
+    padding: 0.7rem 1.2rem;
+    display: none;
+  }
+
+  .nav-bar.visible { display: flex; }
+
+  .btn-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 0.4rem 0.8rem;
+    transition: color 0.2s;
+  }
+  .btn-nav:hover { color: var(--cream); }
+  .btn-nav:disabled { opacity: 0.25; cursor: default; }
+  .btn-nav svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .nav-dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    padding: 0 0.4rem;
+  }
+  .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--warm);
+    opacity: 0.35;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .dot.active {
+    background: var(--gold);
+    opacity: 1;
+    width: 18px;
+    border-radius: 3px;
+  }
+
+  #startpage, #gallery {
+    transition: opacity 0.5s ease;
+  }
+</style>
+</head>
+<body>
+
+<div id="startpage">
+  <div class="start-bg"></div>
+  <div class="class-photo-wrapper">
+    <div class="photo-placeholder">
+      <div class="icon">📷</div>
+      <p>Bilden "1.png" saknas i mappen</p>
+    </div>
+    <img src="1.png" alt="Klassens bild" id="mainClassImg" onerror="handleImageError(this)">
+  </div>
+  <div class="gold-line"></div>
+  <h1 class="start-title">
+    Lerbergsskolans<br>
+    <em>resa till Auschwitz</em>
+  </h1>
+  <p class="start-subtitle">Ett minne – ett vittnesbörd – ett ansvar</p>
+  <button class="start-cta" onclick="openGallery()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M5 12h14M12 5l7 7-7 7"/>
+    </svg>
+    Se resan
+  </button>
+</div>
+
+<div class="topbar" id="topbar" style="display:none">
+  <span class="topbar-title">Lerbergsskolan · Auschwitz</span>
+  <div class="topbar-right">
+    <span class="slide-counter" id="slideCounter">1 / 25</span>
+    <button class="btn-home" onclick="goHome()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 12L12 3l9 9M9 21V12h6v9"/>
+      </svg>
+      Startsida
+    </button>
+  </div>
+</div>
+
+<div id="gallery">
+  <div class="slide-area" id="slideArea"></div>
+</div>
+
+<div class="nav-bar" id="navBar">
+  <button class="btn-nav" id="btnPrev" onclick="changeSlide(-1)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    Föregående
+  </button>
+  <div class="nav-dots" id="navDots"></div>
+  <button class="btn-nav" id="btnNext" onclick="changeSlide(1)">
+    Nästa
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M5 12h14M12 5l7 7-7 7"/>
+    </svg>
+  </button>
+</div>
+
+<script>
+// I listan nedanför skriver du bara in texten som ska synas på varje sida (body)
+const slides = [
+  { body: "Det här är en skulptur som föreställer sovjet fångar som svälter och lider under förintelsen.", images: ["2.png"] },
+  { body: "Bilder på personer som dog i lägret. Ca 1,1 miljoner människor dog i auschwitz-birkenau .", images: ["3.png", "4.png"] },
+  { body: "När fångarna var kalla på vintern där det då blev -30 grader brukade fångarna använda potatispåsar för att hålla sig lite varmare en vanlig outfit brukar vara de kända blårandiga pyjamaskläderna. ", images: ["5.png", "6.png"] },
+  { body: "Dödsväggen eller Svarta Väggen var belägrad inuti gården bredvid block 10 och 11. Mellan 1941 och 1943 avrättades flera tals offer som huvudsakligen bestod av polacker och motståndsmän. SS soldater tvingade fångar att ställa upp sig mot väggen, naken eller med trasiga kläder innan de sköts i bakhuvudet av småkalibriga vapen Småkalibriga = Förstahands vapen som använder ammunition med en liten diameter (vanligen  \(\le \) 8 ,1 mm / 0,32 tum).", images: ["7.png"] },
+  { body: "Byggdes 1941 som ett massivt förintelseläger under andra världskriget och var den huvudsakliga platsen där massmordet av judar begick. Runt 1 miljon dog i Auschwitz-birkenau och mer än 90% av offren inuti Auschwitz komplexet dog just här.Lägret befriades av sovjetiska trupper den första januari 1945. De hittade omkring 7000 extremt märglade överlevande och berg av aska, och ruiner av gaskamrarna som användes av SS gruppen under förintelsen.(Bilden visar ingången till lägret)", images: ["8.png"] },
+  { body: "Skor från människor som hamnade på lägret.", images: ["9.png", "10.png"] },
+  { body: "Den lilla ensamma mannen under den stora cirkeln över sig symboliserar människans utsatthet och ensamhet, övervakning eller sorgen och mörkret kring förintelsen. ", images: ["11.png"] },
+  { body: "Flera olika totyrvapen användes på fångarna i koncentrationslägret. Men det främsta vapnet var den flätade träpiskan, Pietsche.", images: ["12.png"] },
+  { body: "Bara en liten andel av zyklon B burkar som användes till attgasa de olika fångarna.Kunde döda cirka 250personer per burk.", images: ["13.png"] },
+  { body: "Väskor som tillhörde människor som dog i lägren. De judiska kvinnorna kallades för Sara eftersom dom var tvingade vid lag att ha det i deras pass av nazityskland. Det var ett vanligt namn som stod på väskorna", images: ["14.png"] },
+  { body: "Sovplats i Auschwitz. I barackerna tvingades upp till 12 pers att tränga in sig på varje våning av träbristarna. .", images: ["15.png"] },
+  { body: "Stängsel på Auschwitz där många tog sitt eget liv genom att kliva över gränsen.", images: ["16.png"] },
+  { body: "Sovplatser i Birkenau.Träplankorna tål inte människors vikt och de under brukade krossas.Några av barackerna var gjorda för 300-400 pers men ibland kunde det vara upp till 1000 pers som sov där  vid svåra tider", images: ["17.png"] },
+  { body: "Symboler för de olika folket på lägret.Exempelvis, jude, homosexuell, sovjet,politiker.", images: ["18.png"] },
+  { body: "Arbeit Macht Frei betyder “Arbete ger frihet” på tyska.Denna skylt sitter ovanför huvudporten till Auschwitz. Detta var en grym nazistisk lögn för att lura fångarna om att koncentrationslägret inte var ett hemskt ställe. ", images: ["19.png"] },
+  { body: "Innan man valde att börja tatuera in nummer på fångarna så tog man bilder på dom som såg ut som mugshot. Men sen så började man tatuerade dom in bara nummer på dom för till sist va bara de en siffra som va din identitet. ", images: ["20.png"] },
+  { body: "Kvarlevor av flera riktiga personer. Då deras aska som förvaras än idag. ", images: ["21.png"] },
+  { body: "Här är toaletterna som man använde i Auschwitz.", images: ["22.png"] },
+  { body: "Ruinerna som är kvar från gaskamrarna efter SS soldaterna försökte förstöra beviset av dehemska tortyrerna och massmorden som skedde.", images: ["23.png"] },
+  { body: "Kyrkan vid gamla stan. Ett torn är större än det andra för att två rika bröder tävlade om vem som kunde göra ett större torn. Vem var rikast?Det lilla tornet som den ena brodern ägde dödade den andra brodern med en kniv som fanns hängande, eftersom han blev avundsjuk.  .", images: ["24.png", "25.png", "26.png"] },
+  { body: "Dessa ugnar användes till att kremera liken. ", images: ["27.png"] },
+  { body: "Frasen “halt, stöj!” betyder “stanna, stopp” på både polska och tyska. Användes som varningsskylt vid taggtrådsstängslet. Om man närmade sig blev man skjuten. ", images: ["28.png"] },
+  { body: "Toaletter i Birkenau. Där människor ramla i och drunkna. .", images: ["29.png"] },
+  { body: "Rivmärken som folk har gjort på väggarna innan dem blev ihjälgasade. I hopp om att ta sig ut..", images: ["30.png", "31.png"] },
+  { 
+    body: "Dem rakade även av fångarnas hår. När man gick in i auschwitz så fanns det cirka 7 ton människohår, fångarnas hår. I lägret får man se människo håret, men det är inte allt hår. Man fick inte ta bild på håret men när man såg det så var det en stor chock. De gjorde filtar, mattor och mycket mera av håret.", 
+    images: [] // Sista sidan har inga bilder
+  }
+];
+
+let currentSlide = 0;
+
+function handleImageError(img) {
+  if (img.src.endsWith('.png')) {
+    img.src = img.src.replace('.png', '.PNG');
+  } else {
+    img.style.display = 'none';
+  }
+}
+
+function buildSlides() {
+  const area = document.getElementById('slideArea');
+  area.innerHTML = '';
+
+  slides.forEach((s, i) => {
+    const div = document.createElement('div');
+    
+    if (s.images.length === 0) {
+      div.className = 'slide full-text-slide' + (i === 0 ? ' active' : '');
+      div.id = 'slide_' + i;
+      div.innerHTML = `
+        <div class="slide-inner">
+          <div class="slide-text-col">
+            <p class="slide-body">${s.body}</p>
+          </div>
+        </div>
+      `;
+    } else {
+      div.className = 'slide' + (i === 0 ? ' active' : '');
+      div.id = 'slide_' + i;
+      let imageColumnContent = '';
+      s.images.forEach((imgSrc) => {
+        imageColumnContent += `
+          <div class="image-container-box">
+            <div class="photo-placeholder">
+              <div class="icon">📷</div>
+              <p>Filen "${imgSrc}" saknas</p>
+            </div>
+            <img src="${imgSrc}" alt="Resebild" onerror="handleImageError(this)">
+          </div>
+        `;
+      });
+      
+      div.innerHTML = `
+        <div class="slide-inner">
+          <div class="slide-image-col">${imageColumnContent}</div>
+          <div class="slide-text-col">
+            <p class="slide-body">${s.body}</p>
+          </div>
+        </div>
+      `;
+    }
+    area.appendChild(div);
+  });
+
+  buildDots();
+  updateNav();
+}
+
+function buildDots() {
+  const dotsEl = document.getElementById('navDots');
+  dotsEl.innerHTML = '';
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goToSlide(i);
+    dotsEl.appendChild(d);
+  });
+}
+
+function openGallery() {
+  document.getElementById('startpage').style.opacity = '0';
+  setTimeout(() => {
+    document.getElementById('startpage').style.display = 'none';
+    document.getElementById('gallery').style.display = 'block';
+    document.getElementById('topbar').style.display = 'flex';
+    document.getElementById('navBar').classList.add('visible');
+    buildSlides();
+    currentSlide = 0;
+    updateNav();
+  }, 400);
+}
+
+function goHome() {
+  document.getElementById('gallery').style.display = 'none';
+  document.getElementById('topbar').style.display = 'none';
+  document.getElementById('navBar').classList.remove('visible');
+  document.getElementById('startpage').style.display = 'flex';
+  setTimeout(() => document.getElementById('startpage').style.opacity = '1', 20);
+}
+
+function changeSlide(dir) {
+  const next = currentSlide + dir;
+  if (next < 0 || next >= slides.length) return;
+  goToSlide(next);
+}
+
+function goToSlide(idx) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+  currentSlide = idx;
+  document.getElementById('slide_' + idx).classList.add('active');
+  updateNav();
+}
+
+function updateNav() {
+  document.getElementById('btnPrev').disabled = currentSlide === 0;
+  document.getElementById('btnNext').disabled = currentSlide === slides.length - 1;
+  document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${slides.length}`;
+}
+
+document.addEventListener('keydown', e => {
+  if (document.getElementById('gallery').style.display !== 'block') return;
+  if (e.key === 'ArrowRight') changeSlide(1);
+  if (e.key === 'ArrowLeft')  changeSlide(-1);
+});
+</script>
+
+</body>
+</html>
